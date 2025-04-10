@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  auth: OTVkNng6JGFwcjEkNGY2ZXh3Qm8keTFYWmc1Tk5HR0pJWGZpQ210N2tGMA==
+kind: Secret
+metadata:
+  name: htpasswd
+  namespace: default
+  labels:
+    basic-auth: "true"
+type: opaque
