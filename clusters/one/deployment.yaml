@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-website
+  namespace: simple-website
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-website
+  template:
+    metadata:
+      labels:
+        app: simple-website
+    spec:
+      containers:
+      - name: simple-website
+        image: nginx:stable
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: website-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: website-content
+        configMap:
+          name: simple-website-content 
