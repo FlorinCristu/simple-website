@@ -4,7 +4,7 @@ metadata:
   name: simple-website
   namespace: simple-website
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: simple-website
@@ -15,13 +15,30 @@ spec:
     spec:
       containers:
       - name: simple-website
-        image: nginx:stable
+        image: ghcr.io/GITHUB_USERNAME/simple-website:latest # Replace GITHUB_USERNAME with your GitHub username
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: website-content
-          mountPath: /usr/share/nginx/html
-      volumes:
-      - name: website-content
-        configMap:
-          name: simple-website-content 
+          name: http
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-website
+  namespace: simple-website
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: simple-website
+  type: ClusterIP 
